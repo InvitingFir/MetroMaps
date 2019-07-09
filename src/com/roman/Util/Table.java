@@ -1,7 +1,5 @@
 package com.roman.Util;
 
-import com.roman.Metro.Metrosystems.MetroSystem;
-
 import java.util.*;
 
 public class Table <K1, V> {
@@ -15,11 +13,6 @@ public class Table <K1, V> {
         }
         Table.get(key1).put(key2, value);
     }
-
-    /*public void put(K1 key1, K1 key2, V value){
-        if(value == null) return;
-        else{ Table.get(key1).put(key2, value); }
-    }*/
 
     public V get(K1 key1, K1 key2){
         if(Table.get(key1).get(key2) == null) return null;

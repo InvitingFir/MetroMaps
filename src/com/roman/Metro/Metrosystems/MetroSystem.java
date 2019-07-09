@@ -11,7 +11,6 @@ import java.util.*;
 
 public abstract class MetroSystem {
     private Table<MetroStation, Change> Routes;
-    private static final int STATIONRAD = 20;
     protected MapRead Reader;
 
     //инициализация матрицы смежности
@@ -44,7 +43,7 @@ public abstract class MetroSystem {
         for (Map.Entry<MetroStation, Map<MetroStation, Change>> column: Metro.entrySet()) {
             Draw = true;
             if(column.getValue().size() == 1) {
-                column.getKey().drawStation(g, STATIONRAD);
+                column.getKey().drawStation(g);
                 continue;
             }
             m1 = column.getKey();
@@ -68,12 +67,12 @@ public abstract class MetroSystem {
             if(key.getColor() != m.getColor()) numOfColors++;
         }
         deltaDegree = 360/numOfColors;
-        key.drawStation(g, key, STATIONRAD, startDegree, deltaDegree);
+        key.drawStation(g, key, startDegree, deltaDegree);
         startDegree+=deltaDegree;
         for(MetroStation m:value.keySet()){
             if(key.getColor() == m.getColor()) continue;
             else{
-                m.drawStation(g, key, STATIONRAD, startDegree, deltaDegree);
+                m.drawStation(g, key, startDegree, deltaDegree);
                 startDegree+=deltaDegree;
             }
         }
@@ -87,7 +86,7 @@ public abstract class MetroSystem {
         for (Map.Entry<MetroStation, Map<MetroStation, Change>> column : Metro.entrySet()) {
             for (MetroStation line : column.getValue().keySet()) {
                 if (line.getPosition() > LastPosition) {
-                    column.getKey().drawLine(g, line, STATIONRAD);
+                    column.getKey().drawLine(g, line);
                 } else break;
             }
             LastPosition = column.getKey().getPosition();

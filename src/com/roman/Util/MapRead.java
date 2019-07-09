@@ -9,13 +9,10 @@ import java.io.*;
 //служебный класс для легкого заполенения матрицы в одну команду.
 
 public class MapRead {
-    private String Path;
     private Table<MetroStation, Change> Metro;
-    private FileReader reader;
     private BufferedReader in;
 
-    public MapRead(String path, Table metro){
-        this.Path = path;
+    public MapRead(String path, Table<MetroStation, Change> metro){
         this.Metro = metro;
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path);
         in = new BufferedReader(new InputStreamReader(inputStream));

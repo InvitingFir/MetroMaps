@@ -4,6 +4,6 @@ import com.roman.GUI.MainFrame;
 
 public class MainClass {
     public static void main(String[] args) {
-        MainFrame mf = new MainFrame();
+        MainFrame mf = new MainFrame("Metro Guide");
     }
 }
