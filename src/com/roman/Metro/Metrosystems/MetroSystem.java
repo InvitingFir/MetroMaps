@@ -11,9 +11,8 @@ import java.util.*;
 
 public abstract class MetroSystem {
     private Table<MetroStation, Change> Routes;
-    protected static final int STATIONRAD = 20;
+    private static final int STATIONRAD = 20;
     protected MapRead Reader;
-
 
     //инициализация матрицы смежности
     //чтение файла с расстояниями в stationsInit();
@@ -21,10 +20,13 @@ public abstract class MetroSystem {
         Routes = new Table<>();
         Reader = new MapRead(FilePath, Routes);
         stationsInit();
+        connection();
     }
 
     //индивидуальная настройка карты
     protected abstract void stationsInit();
+
+    protected abstract void connection();
 
     //отрисовка карты метро целиком
     //сначала вершины, потом маршруты
@@ -42,7 +44,7 @@ public abstract class MetroSystem {
         for (Map.Entry<MetroStation, Map<MetroStation, Change>> column: Metro.entrySet()) {
             Draw = true;
             if(column.getValue().size() == 1) {
-                stationIconDraw(column.getValue(), column.getKey(), g);
+                column.getKey().drawStation(g, STATIONRAD);
                 continue;
             }
             m1 = column.getKey();
@@ -55,59 +57,40 @@ public abstract class MetroSystem {
             }
             if(Draw){stationIconDraw(column.getValue(), column.getKey(), g);}
         }
-
-        /*for (MetroStation m:Metro.keySet()) {
-            m.draw(g, STATIONRAD);
-        }*/
     }
 
+    //Отрисовка конкретных станций
+    //Выполняется в StationDraw(Graphics g, Table<MetroStation, Change> Metro)
     private void stationIconDraw(Map<MetroStation, Change> value, MetroStation key, Graphics g){
         int numOfColors = 1;
         int startDegree = 0, deltaDegree;
-        if(value.size() > 2)
-            System.out.println("Hello");
         for(MetroStation m:value.keySet()){
             if(key.getColor() != m.getColor()) numOfColors++;
         }
-        deltaDegree = (int)360/numOfColors;
-        key.draw(g, key, STATIONRAD, startDegree, startDegree+deltaDegree);
+        deltaDegree = 360/numOfColors;
+        key.drawStation(g, key, STATIONRAD, startDegree, deltaDegree);
         startDegree+=deltaDegree;
         for(MetroStation m:value.keySet()){
             if(key.getColor() == m.getColor()) continue;
             else{
-                m.draw(g, key, STATIONRAD, startDegree, deltaDegree);
+                m.drawStation(g, key, STATIONRAD, startDegree, deltaDegree);
                 startDegree+=deltaDegree;
             }
         }
     }
 
 
-    //отрисовка маршрутов
+    //отрисовка всех маршрутов
     //выполняется в методе graphicsInit(Graphics g)
-    private void routeDraw(Graphics g, Table<MetroStation, Change> Metro){
+    private void routeDraw(Graphics g, Table<MetroStation, Change> Metro) {
         int LastPosition = -1;
-        for (Map.Entry<MetroStation, Map<MetroStation, Change>> column: Metro.entrySet()) {
-            for (MetroStation line: column.getValue().keySet()) {
-                if(line.getPosition() > LastPosition){ lineDraw(g, column.getKey(), line); }
-                else break;
+        for (Map.Entry<MetroStation, Map<MetroStation, Change>> column : Metro.entrySet()) {
+            for (MetroStation line : column.getValue().keySet()) {
+                if (line.getPosition() > LastPosition) {
+                    column.getKey().drawLine(g, line, STATIONRAD);
+                } else break;
             }
             LastPosition = column.getKey().getPosition();
         }
-    }
-
-    //Отрисовка как раз отрисовка самих линий
-    //вызывается в методе routeDraw()
-    private void lineDraw(Graphics g, MetroStation m1, MetroStation m2){
-        int delta = STATIONRAD/2;
-        int x1 = m1.getX()+delta;
-        int x2 = m2.getX()+delta;
-        int y1 = m1.getY()+delta;
-        int y2 = m2.getY()+delta;
-        if(x1 == x2 && y1 == y2) return;
-
-        g.setColor(m2.getColor());
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setStroke(new BasicStroke(3));
-        g2.drawLine(x1, y1, x2, y2);
     }
 }

@@ -10,6 +10,4 @@ public class Line {
     }
 
     public Color getLineColor() { return lineColor; }
-
-    public void setLineColor(Color lineColor) { this.lineColor = lineColor; }
 }

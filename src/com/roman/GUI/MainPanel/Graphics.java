@@ -9,7 +9,10 @@ public class Graphics extends JPanel {
     private static Graphics Singleton;
     private MetroSystem Metro;
 
-    private Graphics(MetroSystem m){Metro = m;}
+    private Graphics(MetroSystem m){
+        Metro = m;
+    }
+
 
     public static Graphics getInstance(MetroSystem m){
         if(Singleton ==  null) Singleton = new Graphics(m);

@@ -8,11 +8,12 @@ import java.awt.*;
 
 public class TestSystem extends MetroSystem{
 
-    public static final int NUMOFSTATIONS = 3;
     private Line Red;
     private Line Green;
     private Line Blue;
     private Line Purple;
+    private Line Orange;
+    private Line Brown;
     private MetroStation A;
     private MetroStation B;
     private MetroStation C;
@@ -45,64 +46,69 @@ public class TestSystem extends MetroSystem{
     public TestSystem(){ super("com/roman/Resource/TestMetro.txt"); }
 
     protected void stationsInit() {
+        Brown = new Line(new Color(101, 67, 33));
+        Orange = new Line(Color.ORANGE);
         Red = new Line(new Color(227, 41, 2));
         Green = new Line(new Color(19, 172, 11));
         Blue = new Line(new Color(14, 4, 204));
         Purple = new Line(new Color(196, 6, 143));
 
-        A = new MetroStation("A", 60, 60, Purple);
-        B = new MetroStation("B", 60, 100, Purple);
-        C = new MetroStation("C", 60, 100, Red);
-        D = new MetroStation("D", 60, 100, Green);
-        E = new MetroStation("E", 100, 100, Red);
-        F = new MetroStation("F", 60, 140, Green);
-        G = new MetroStation("G", 20, 140, Purple);
-        H = new MetroStation("H", 20, 180, Purple);
-        //Проверка других ситуаций
-
-        I = new MetroStation("I", 60, 200, Red);
-        J = new MetroStation("J", 100, 200, Blue);
-        K = new MetroStation("K", 100, 240, Red);
-        L = new MetroStation("L", 100, 240, Blue);
-        M = new MetroStation("M", 100, 240, Green);
-        N = new MetroStation("N", 140, 280, Green);
-        O = new MetroStation("O", 60, 280, Red);
-        P = new MetroStation("P", 100, 280, Blue);
-        Q = new MetroStation("Q", 140, 200, Green);
-        R = new MetroStation("R", 180, 200, Green);
-        /*
-        S = new MetroStation("S", 20, 60, Color.CYAN);
-        T = new MetroStation("T", 20, 60, Color.CYAN);
-        U = new MetroStation("U", 20, 60, Color.CYAN);
-        V = new MetroStation("V", 20, 60, new Color(69, 50, 46));
-        W = new MetroStation("W", 20, 60, Color.GREEN);
-        X = new MetroStation("X", 20, 60, new Color(69, 50, 46));
-        Y = new MetroStation("Y", 20, 60, new Color(69, 50, 46));
-        Z = new MetroStation("Z", 20, 60, Color.GREEN);*/
-        connection();
+        A = new MetroStation("A", -120, -80, Purple);
+        B = new MetroStation("B", -120, -40, Purple);
+        C = new MetroStation("C", -80, -40, Purple);
+        D = new MetroStation("D", -80, -40, Green);
+        E = new MetroStation("E", 0, 0, Brown);
+        F = new MetroStation("F", 0, 0, Purple);
+        G = new MetroStation("G", 80, 40,  Green);
+        H = new MetroStation("H", 80, 40, Purple);
+        I = new MetroStation("I", 120,40, Purple);
+        J = new MetroStation("J", 0, -160, Orange);
+        K = new MetroStation("K", 0, -120, Orange);
+        L = new MetroStation("L", 0, -80, Orange);
+        M = new MetroStation("M", 0, -80, Green);
+        N = new MetroStation("N", 0, 0, Red);
+        O = new MetroStation("O", 80, -40,  Green);
+        P = new MetroStation("P", 80, -40, Red);
+        Q = new MetroStation("Q", 120, -40, Red);
+        R = new MetroStation("R", 120, -80, Red);
+        S = new MetroStation("S", -80, 40, Blue);
+        T = new MetroStation("T", -120, 40, Blue);
+        U = new MetroStation("U", -120, 80, Blue);
+        V = new MetroStation("V", 0, 80, Brown);
+        W = new MetroStation("W", 0, 80, Green);
+        X = new MetroStation("X", 0, 120, Brown);
+        Y = new MetroStation("Y", 40, 120, Brown);
+        Z = new MetroStation("Z", -80, 40, Green);
     }
 
     //Сначала что, потом с кем
     //в порядке, обратном афлавитному(от Z до A)
-    private void connection(){
+    protected void connection(){
         Reader.put(A, B);
-        Reader.put(B, G, D, C, A);
-        Reader.put(C, E, D, B);
-        Reader.put(D, F, C, B);
-        Reader.put(E, C);
-        Reader.put(F, D);
-        Reader.put(G, H, B);
-        Reader.put(H, G);
-
-        Reader.put(I, K);
-        Reader.put(J, L);
-        Reader.put(K, O, L, I);
-        Reader.put(L, P, M, K, J);
-        Reader.put(M, Q, N, L, K);
-        Reader.put(N, M);
-        Reader.put(O, K);
-        Reader.put(P, L);
-        Reader.put(Q, R, M);
+        Reader.put(B, C, A);
+        Reader.put(C, F, D, B);
+        Reader.put(D, Z, M, C);
+        Reader.put(E, V, N, F);
+        Reader.put(F, N, H, E, C);
+        Reader.put(G, W, O, H);
+        Reader.put(H, I, G, F);
+        Reader.put(I, H);
+        Reader.put(J, K);
+        Reader.put(K, L, J);
+        Reader.put(L, M, K);
+        Reader.put(M, O, L, D);
+        Reader.put(N, P, F, E);
+        Reader.put(O, P, M, G);
+        Reader.put(P, Q, O, N);
+        Reader.put(Q, R, P);
         Reader.put(R, Q);
+        Reader.put(S, Z, T);
+        Reader.put(T, U, S);
+        Reader.put(U, T);
+        Reader.put(V, X, W, E);
+        Reader.put(W, Z, V, G);
+        Reader.put(X, Y, V);
+        Reader.put(Y, X);
+        Reader.put(Z, W, S, D);
     }
 }
