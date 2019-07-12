@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Settings extends JPanel {
     private static Settings Singleton;
@@ -14,6 +16,8 @@ public class Settings extends JPanel {
     private JButton ZoomIn;
     private JButton ZoomOut;
     private Graphics g;
+    private JComboBox MetroBox;
+    private Map<String, MetroSystem> MetroMap;
     private float Scale = 1;
 
     private Settings(MetroSystem m){
@@ -21,11 +25,13 @@ public class Settings extends JPanel {
         setBackground(Color.LIGHT_GRAY);
         setPreferredSize(new Dimension(300, 600));
         g = Graphics.getInstance();
+        MetroMap = new HashMap<>();
 
         ZoomIn = new JButton("+");
         ZoomIn.addActionListener(new ZoomInListener());
         ZoomOut = new JButton("-");
         ZoomOut.addActionListener(new ZoomOutListener());
+        MetroBox = new JComboBox();
 
         add(new JLabel("Zoom"));
         add(ZoomIn);

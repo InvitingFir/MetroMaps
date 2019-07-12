@@ -2,6 +2,7 @@ package com.roman.Metro.Metrosystems;
 
 
 import com.roman.Metro.Change;
+import com.roman.Metro.Line;
 import com.roman.Metro.MetroStation;
 import com.roman.Util.MapRead;
 import com.roman.Util.Table;
@@ -10,22 +11,20 @@ import java.awt.*;
 import java.util.*;
 
 public abstract class MetroSystem {
-    private Table<MetroStation, Change> Routes;
+    protected Table<MetroStation, Change> Routes;
     protected MapRead Reader;
+    private String StationsPath, RoutesPath;
 
-    //инициализация матрицы смежности
-    //чтение файла с расстояниями в stationsInit();
-    public MetroSystem(String FilePath){
-        Routes = new Table<>();
-        Reader = new MapRead(FilePath, Routes);
-        stationsInit();
-        connection();
+    public MetroSystem(String path1, String path2){
+        StationsPath = path1;
+        RoutesPath = path2;
     }
 
-    //индивидуальная настройка карты
-    protected abstract void stationsInit();
 
-    protected abstract void connection();
+    public Table<MetroStation, Change> readStationFile(Line [] Lines){
+        Reader = new MapRead(StationsPath, RoutesPath,  Lines);
+        return Reader.stationsInit();
+    }
 
     //отрисовка карты метро целиком
     //сначала вершины, потом маршруты
@@ -43,7 +42,7 @@ public abstract class MetroSystem {
         for (Map.Entry<MetroStation, Map<MetroStation, Change>> column: Metro.entrySet()) {
             Draw = true;
             if(column.getValue().size() == 1) {
-                column.getKey().drawStation(g);
+                column.getKey().drawStation(g, column.getKey(), 60, 360);
                 continue;
             }
             m1 = column.getKey();
@@ -62,7 +61,7 @@ public abstract class MetroSystem {
     //Выполняется в StationDraw(Graphics g, Table<MetroStation, Change> Metro)
     private void stationIconDraw(Map<MetroStation, Change> value, MetroStation key, Graphics g){
         int numOfColors = 1;
-        int startDegree = 0, deltaDegree;
+        int startDegree = 60, deltaDegree;
         for(MetroStation m:value.keySet()){
             if(key.getColor() != m.getColor()) numOfColors++;
         }
@@ -85,6 +84,7 @@ public abstract class MetroSystem {
         int LastPosition = -1;
         for (Map.Entry<MetroStation, Map<MetroStation, Change>> column : Metro.entrySet()) {
             for (MetroStation line : column.getValue().keySet()) {
+                if(line.getLocation().equals(column.getKey().getLocation())) continue;
                 if (line.getPosition() > LastPosition) {
                     column.getKey().drawLine(g, line);
                 } else break;

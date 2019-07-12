@@ -1,5 +1,7 @@
 package com.roman.Metro;
 
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
 import java.awt.*;
 
 public class MetroStation{
@@ -13,6 +15,9 @@ public class MetroStation{
     private static int CENTER_Y = 300;
     private static final int STATIONRAD = 20;
     private static float Scale = 1;
+    private Highlighter.HighlightPainter Highlighter;
+
+
     public MetroStation(String StationName, int X, int Y, Line myLine){
         StationID = Position;
         Position++;
@@ -20,13 +25,14 @@ public class MetroStation{
         location = new Location(X, Y);
         this.line = myLine;
         f = new Font("FreeSet", Font.PLAIN, 14);
+        Highlighter = new DefaultHighlighter.DefaultHighlightPainter(Color.GRAY);
     }
 
     public static void setCenterX(int X){CENTER_X = X;}
     public static int getCenterX(){return CENTER_X;}
     public static void setCenterY(int Y){CENTER_Y = Y;}
     public static int getCenterY(){return CENTER_Y;}
-    private String getStationName(){return this.StationName;}
+    public String getStationName(){return this.StationName;}
     private int getX(){return location.getX();}
     public int getPosition(){ return StationID;}
     private int getY(){return location.getY();}
@@ -35,22 +41,15 @@ public class MetroStation{
 
     public static void rescale(float S){Scale = S;}
 
-    public void drawStation(Graphics g){
-        g.setFont(f);
-        g.setColor(Color.BLACK);
-        g.drawString(StationName, CENTER_X + Math.round((getX()+STATIONRAD)*Scale), CENTER_Y + Math.round(getY()*Scale));
-        g.setColor(line.getLineColor());
-        int temp = Math.round(STATIONRAD*Scale);
-        g.fillOval(CENTER_X + Math.round(getX()*Scale), CENTER_Y + Math.round(getY()*Scale), temp, temp);
-    }
-
     public void drawStation(Graphics g, MetroStation point, int startAngle, int endAngle){
         int radius = Math.round(STATIONRAD*Scale);
         int X = CENTER_X + Math.round(point.getX()*Scale);
         int Y = CENTER_Y + Math.round(point.getY()*Scale);
+        g.setColor(Color.GRAY);
         g.setFont(f);
-        g.setColor(Color.BLACK);
-        g.drawString(point.getStationName(), CENTER_X + Math.round((getX()+STATIONRAD)*Scale), CENTER_Y + Math.round(getY()*Scale));
+        int StringX = (int)(X+STATIONRAD/2*Scale + Scale*STATIONRAD*Math.cos(Math.toRadians(startAngle)+Math.PI));
+        int StringY = (int)(Y+STATIONRAD/2*Scale + Scale*STATIONRAD*Math.sin(Math.toRadians(startAngle)+Math.PI));
+        g.drawString(StationName, StringX, StringY);
         g.setColor(line.getLineColor());
         g.fillArc(X, Y, radius, radius, startAngle, endAngle);
     }

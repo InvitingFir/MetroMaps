@@ -11,7 +11,7 @@ public class MainPanel extends JPanel {
     private MetroSystem Metro;
 
     private MainPanel(){
-        Metro = new TestSystem();
+        Metro = new TestSystem("com/roman/Resource/TestMetro.stat", "com/roman/Resource/TestMetro.con");
         this.setLayout(new BorderLayout());
         this.add(Graphics.getInstance(Metro), BorderLayout.CENTER);
         this.add(Settings.getInstance(Metro), BorderLayout.EAST);

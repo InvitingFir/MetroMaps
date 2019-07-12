@@ -1,134 +1,106 @@
 package com.roman.Util;
 
 import com.roman.Metro.Change;
+import com.roman.Metro.Line;
 import com.roman.Metro.MetroStation;
 
-import java.io.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 
-//служебный класс для легкого заполенения матрицы в одну команду.
+//служебный класс для легкого заполенения матрицы.
 
 public class MapRead {
     private Table<MetroStation, Change> Metro;
-    private BufferedReader in;
+    private Line [] LinesMas;
+    private String StationsPath;
+    private Scanner RouteScan;
 
-    public MapRead(String path, Table<MetroStation, Change> metro){
-        this.Metro = metro;
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path);
-        in = new BufferedReader(new InputStreamReader(inputStream));
+    public MapRead(String Stationspath, String RoutesPath, Line [] Lines){
+        LinesMas = Lines;
+        this.StationsPath = Stationspath;
+        Metro = new Table<>();
+        try{RouteScan = new Scanner(getClass().getClassLoader().getResourceAsStream(RoutesPath));}
+        catch(Exception e){e.printStackTrace();}
     }
+
+    public Table<MetroStation, Change> stationsInit(){
+        Scanner sc;
+        String name;
+        int X, Y;
+        Line line;
+
+        try{ sc = new Scanner(getClass().getClassLoader().getResourceAsStream(StationsPath));
+            while(sc.hasNextLine()){
+                name = sc.next();
+                X = sc.nextInt();
+                Y = sc.nextInt();
+                line = lineChoice(sc.next());
+                Metro.putColumn(new MetroStation(name, X, Y, line));
+            }
+        }
+        catch(Exception e){e.printStackTrace();}
+        return Metro;
+    }
+
+    private Line lineChoice(String lineName){
+        for (Line l:LinesMas) {
+            if(lineName.equals(l.getName())){
+                return l;
+            }
+        }
+        return null;
+    }
+
+    public void put(int pos1, int pos2){
+        int []mas = {pos1, pos2};
+        readRoutes(mas);
+    }
+
+    public void put(int pos1, int pos2, int pos3){
+        int []mas = {pos1, pos2, pos3};
+        readRoutes(mas);
+    }
+
+    public void put(int pos1, int pos2, int pos3, int pos4){
+        int []mas = {pos1, pos2, pos3, pos4};
+        readRoutes(mas);
+    }
+
+    public void put(int pos1, int pos2, int pos3, int pos4, int pos5){
+        int []mas = {pos1, pos2, pos3, pos4, pos5};
+        readRoutes(mas);
+    }
+
 
     //заполнение матрицы для станции со степенью 1
-    public void put(MetroStation head, MetroStation change1){
-        String data;
-        int IntData = 0;
+    private void readRoutes(int [] mas){
+        String scan;
+        MetroStation [] MetrostatMas = new MetroStation[mas.length];
+        Map<MetroStation, Change> temp = new LinkedHashMap<>();
+        int j = 0;
+
+        for(int position:mas){
+            for(Map.Entry<MetroStation, Map<MetroStation, Change>> col:Metro.entrySet()){
+                if(col.getKey().getPosition() == position){
+                    MetrostatMas[j] = col.getKey();
+                    j++;
+                    break;
+                }
+            }
+        }
+
         try{
-            data = in.readLine();
-            IntData = Integer.parseInt(data);
+            j=1;
+            while(!(scan = RouteScan.next()).equals(";")){
+                temp.put(MetrostatMas[j], new Change(Integer.parseInt(scan)));
+                j++;
+            }
         }
-        catch(Exception e){e.printStackTrace();}
-        Metro.put(head, change1, new Change(IntData));
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        Metro.setColumn(MetrostatMas[0], temp);
     }
-
-    //заполнение матрицы для станции со степенью 2
-    public void put(MetroStation head, MetroStation change1, MetroStation change2){
-        int i = 0;
-        char [] CharData = new char[256];
-        String data;
-        int IntData = 0;
-        try{
-            data = in.readLine();
-            CharData = data.toCharArray();
-        }
-        catch(Exception e){e.printStackTrace();}
-        while(CharData[i]!=' '){
-            IntData = IntData*10+Character.getNumericValue(CharData[i]);
-            i++;
-        }
-        Metro.put(head, change1, new Change(IntData));
-        IntData = 0;
-        i++;
-        while(i < CharData.length){
-            IntData = IntData*10+Character.getNumericValue(CharData[i]);
-            i++;
-        }
-        Metro.put(head, change2, new Change(IntData));
-    }
-
-    //заполнение матриц для станции со степенью 3
-    public void put(MetroStation head, MetroStation change1, MetroStation change2, MetroStation change3){
-        int i = 0;
-        char [] CharData = new char[256];
-        String data;
-        int IntData = 0;
-        try{
-            data = in.readLine();
-            CharData = data.toCharArray();
-        }
-        catch(Exception e){e.printStackTrace();}
-        while(CharData[i]!=' '){
-            IntData = IntData*10+Character.getNumericValue(CharData[i]);
-            i++;
-        }
-        Metro.put(head, change1, new Change(IntData));
-        i++;
-        IntData = 0;
-
-        while(CharData[i]!=' '){
-            IntData = IntData*10+Character.getNumericValue(CharData[i]);
-            i++;
-        }
-        Metro.put(head, change2, new Change(IntData));
-        i++;
-        IntData = 0;
-
-        while(i < CharData.length){
-            IntData = IntData*10+Character.getNumericValue(CharData[i]);
-            i++;
-        }
-        Metro.put(head, change3, new Change(IntData));
-    }
-
-    public void put(MetroStation head, MetroStation change1, MetroStation change2, MetroStation change3, MetroStation change4){
-        int i = 0;
-        char [] CharData = new char[256];
-        String data;
-        int IntData = 0;
-        try{
-            data = in.readLine();
-            CharData = data.toCharArray();
-        }
-        catch(Exception e){e.printStackTrace();}
-        while(CharData[i]!=' '){
-            IntData = IntData*10+Character.getNumericValue(CharData[i]);
-            i++;
-        }
-        Metro.put(head, change1, new Change(IntData));
-        i++;
-        IntData = 0;
-
-        while(CharData[i]!=' '){
-            IntData = IntData*10+Character.getNumericValue(CharData[i]);
-            i++;
-        }
-        Metro.put(head, change2, new Change(IntData));
-        i++;
-        IntData = 0;
-
-        while(CharData[i]!=' '){
-            IntData = IntData*10+Character.getNumericValue(CharData[i]);
-            i++;
-        }
-        Metro.put(head, change3, new Change(IntData));
-        i++;
-        IntData = 0;
-
-        while(i < CharData.length){
-            IntData = IntData*10+Character.getNumericValue(CharData[i]);
-            i++;
-        }
-        Metro.put(head, change4, new Change(IntData));
-    }
-
-
 }

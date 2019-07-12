@@ -16,7 +16,6 @@ public class Graphics extends JPanel {
     private JScrollBar VerticalScroll;
     private static Graphics Singleton;
     private MetroSystem Metro;
-    private float ScrollerScale = 1;
 
     private Graphics(){}
 
