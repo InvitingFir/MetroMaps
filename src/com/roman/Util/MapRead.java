@@ -77,30 +77,20 @@ public class MapRead {
     //заполнение матрицы для станции со степенью 1
     private void readRoutes(int [] mas){
         String scan;
-        MetroStation [] MetrostatMas = new MetroStation[mas.length];
+        MetroStation head = null;
         Map<MetroStation, Change> temp = new LinkedHashMap<>();
-        int j = 0;
-
-        for(int position:mas){
+        for(Map.Entry<MetroStation, Map<MetroStation, Change>> col:Metro.entrySet()) {
+            if(col.getKey().getPosition() == mas[0]){head = col.getKey();}
+        }
+        for(int i = 1;i<mas.length;i++){
             for(Map.Entry<MetroStation, Map<MetroStation, Change>> col:Metro.entrySet()){
-                if(col.getKey().getPosition() == position){
-                    MetrostatMas[j] = col.getKey();
-                    j++;
+                if(col.getKey().getPosition() == mas[i]){
+                    scan = RouteScan.next();
+                    temp.put(col.getKey(), new Change(Integer.parseInt(scan)));
                     break;
                 }
             }
         }
-
-        try{
-            j=1;
-            while(!(scan = RouteScan.next()).equals(";")){
-                temp.put(MetrostatMas[j], new Change(Integer.parseInt(scan)));
-                j++;
-            }
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        Metro.setColumn(MetrostatMas[0], temp);
+        Metro.setColumn(head, temp);
     }
 }

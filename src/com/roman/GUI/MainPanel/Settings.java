@@ -1,5 +1,6 @@
 package com.roman.GUI.MainPanel;
 
+import com.roman.GUI.MainFrame;
 import com.roman.Metro.MetroStation;
 import com.roman.Metro.Metrosystems.MetroSystem;
 
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Settings extends JPanel {
+    public static final int WIDTH = MainFrame.WIDTH-500;
     private static Settings Singleton;
     private MetroSystem Metro;
     private JButton ZoomIn;
@@ -23,7 +25,7 @@ public class Settings extends JPanel {
     private Settings(MetroSystem m){
         Metro = m;
         setBackground(Color.LIGHT_GRAY);
-        setPreferredSize(new Dimension(300, 600));
+        setPreferredSize(new Dimension(WIDTH, MainFrame.HEIGHT));
         g = Graphics.getInstance();
         MetroMap = new HashMap<>();
 

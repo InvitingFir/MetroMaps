@@ -14,8 +14,8 @@ public class TestSystem extends MetroSystem{
     private Line Brown = new Line("Brown", new Color(101, 67, 33));
     private Line [] LineMas = {Red, Green, Blue, Purple, Orange, Brown};
 
-    public TestSystem(String path1, String path2){
-        super(path1, path2);
+    public TestSystem(){
+        super("com/roman/Resource/TestMetro.stat", "com/roman/Resource/TestMetro.con");
         Routes = readStationFile(LineMas);
         connections();
     }

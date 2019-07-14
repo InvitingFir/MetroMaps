@@ -1,6 +1,5 @@
 package com.roman.Metro.Metrosystems;
 
-
 import com.roman.Metro.Change;
 import com.roman.Metro.Line;
 import com.roman.Metro.MetroStation;
@@ -61,10 +60,8 @@ public abstract class MetroSystem {
     //Выполняется в StationDraw(Graphics g, Table<MetroStation, Change> Metro)
     private void stationIconDraw(Map<MetroStation, Change> value, MetroStation key, Graphics g){
         int numOfColors = 1;
-        int startDegree = 60, deltaDegree;
-        for(MetroStation m:value.keySet()){
-            if(key.getColor() != m.getColor()) numOfColors++;
-        }
+        int startDegree = 45, deltaDegree;
+        for(MetroStation m:value.keySet()){ if(key.getColor() != m.getColor()) numOfColors++; }
         deltaDegree = 360/numOfColors;
         key.drawStation(g, key, startDegree, deltaDegree);
         startDegree+=deltaDegree;
@@ -85,9 +82,8 @@ public abstract class MetroSystem {
         for (Map.Entry<MetroStation, Map<MetroStation, Change>> column : Metro.entrySet()) {
             for (MetroStation line : column.getValue().keySet()) {
                 if(line.getLocation().equals(column.getKey().getLocation())) continue;
-                if (line.getPosition() > LastPosition) {
-                    column.getKey().drawLine(g, line);
-                } else break;
+                if (line.getPosition() > LastPosition) column.getKey().drawLine(g, line);
+                else break;
             }
             LastPosition = column.getKey().getPosition();
         }

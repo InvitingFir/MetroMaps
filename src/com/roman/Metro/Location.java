@@ -11,10 +11,8 @@ public class Location {
         this.Y = Y;
     }
 
-    public void setX(int newX){X = newX;}
     public int getX(){return X;}
 
-    public void setY(int newY){Y = newY;}
     public int getY(){return Y;}
 
     @Override

@@ -1,17 +1,18 @@
 package com.roman.GUI.MainPanel;
 
 
+import com.roman.GUI.MainFrame;
 import com.roman.Metro.MetroStation;
 import com.roman.Metro.Metrosystems.MetroSystem;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 
 public class Graphics extends JPanel {
+    public static final int HEIGHT = MainFrame.HEIGHT-70;
+    public static final int WIDTH = MainFrame.WIDTH-Settings.WIDTH-50;
     private JScrollBar HorizontalScroll;
     private JScrollBar VerticalScroll;
     private static Graphics Singleton;
@@ -21,9 +22,9 @@ public class Graphics extends JPanel {
 
     private Graphics(MetroSystem m){
         Metro = m;
-        HorizontalScroll = new JScrollBar(JScrollBar.HORIZONTAL, 250, 1, 0, 450);
+        HorizontalScroll = new JScrollBar(JScrollBar.HORIZONTAL, WIDTH/2, 1, 0, WIDTH);
         HorizontalScroll.addAdjustmentListener(new HorizontalListener());
-        VerticalScroll = new JScrollBar(JScrollBar.VERTICAL, 300, 1, 0, 530);
+        VerticalScroll = new JScrollBar(JScrollBar.VERTICAL, HEIGHT/2, 1, 0, HEIGHT);
         VerticalScroll.addAdjustmentListener(new VerticalListener());
 
         this.setLayout(new BorderLayout());
