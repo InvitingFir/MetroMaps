@@ -41,11 +41,13 @@ public class Settings extends JPanel {
             }
         });
         JComboBox<MetroStation> StartBox = new JComboBox<>(stations);
+        StartBox.setPreferredSize(new Dimension(WIDTH-40, 20));
         StartBox.addActionListener(new StartComboListener());
         StartBox.setEditable(true);
         start = (MetroStation)StartBox.getSelectedItem();
 
         JComboBox<MetroStation> FinishBox = new JComboBox<>(stations);
+        FinishBox.setPreferredSize(new Dimension(WIDTH-40, 20));
         FinishBox.addActionListener(new FinishComboListener());
         FinishBox.setEditable(true);
         finish = (MetroStation)FinishBox.getSelectedItem();
@@ -59,10 +61,11 @@ public class Settings extends JPanel {
 
         JPanel PathPanel = new JPanel();
         PathPanel.setBackground(Color.LIGHT_GRAY);
-        PathPanel.add(new JLabel("Ваш   маршрут:"));
+        PathPanel.add(new JLabel("Из:"));
         PathPanel.add(StartBox);
-        PathPanel.add(CalculateButton);
+        PathPanel.add(new JLabel("В:"));
         PathPanel.add(FinishBox);
+        PathPanel.add(CalculateButton);
         PathPanel.add(CancelButton);
         return PathPanel;
     }
@@ -120,7 +123,7 @@ public class Settings extends JPanel {
 
     private class CalculateListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {
-            Metro.CalculatePath(start, finish);
+            if(!start.equals(finish)) Metro.CalculatePath(start, finish);
             g.repaint();
         }
     }

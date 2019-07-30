@@ -41,4 +41,5 @@ public class Table <K1, V> {
     public void fill(List<K1> list){
         for (K1 key:list) { Table.put(key, null); }
     }
+
 }

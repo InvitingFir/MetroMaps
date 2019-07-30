@@ -125,6 +125,7 @@ public abstract class MetroSystem {
                 }
             }
         }
+        System.out.println(length.get(finish));
         pathReconstruction(start, finish, predators);
     }
 

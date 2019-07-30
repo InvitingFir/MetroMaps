@@ -8,7 +8,8 @@ public class MetroStation{
     private String StationName;
     private Line line;
     private Location location;
-    private Font f;
+    private static Font f;
+    private static int FontSize = 11;
     private static int CENTER_X = com.roman.GUI.MainPanel.Graphics.WIDTH/2;
     private static int CENTER_Y = com.roman.GUI.MainPanel.Graphics.HEIGHT/2;
     private static final int STATIONRAD = 20;
@@ -21,7 +22,7 @@ public class MetroStation{
         this.StationName = StationName;
         location = new Location(X, Y);
         this.line = myLine;
-        f = new Font("FreeSet", Font.PLAIN, 12);
+        f = new Font("FreeSet", Font.PLAIN, FontSize);
     }
 
     public static void setCenterX(int X){CENTER_X = X;}
@@ -31,7 +32,10 @@ public class MetroStation{
     private int getY(){return location.getY();}
     public Location getLocation(){return location;}
     public Color getColor(){return line.getLineColor();}
-    public static void rescale(float S){Scale = S;}
+    public static void rescale(float S){
+        Scale = S;
+        f = new Font("FreeSet", Font.PLAIN, (int)(FontSize*S/1.3));
+    }
 
     @Override
     public String toString() { return StationName; }
@@ -40,15 +44,15 @@ public class MetroStation{
         int radius = Math.round(STATIONRAD*Scale);
         int X = CENTER_X + Math.round(point.getX()*Scale);
         int Y = CENTER_Y + Math.round(point.getY()*Scale);
+        g.setColor(line.getLineColor());
+        g.fillArc(X, Y, radius, radius, startAngle, endAngle);
         if(!Line.isChosen()){
-            g.setColor(Color.GRAY);
+            g.setColor(Color.BLACK);
             g.setFont(f);
             int StringX = (int)(X+STATIONRAD/2*Scale + Scale*STATIONRAD*Math.cos(2*Math.PI - Math.toRadians(startAngle+endAngle/2)));
             int StringY = (int)(Y+STATIONRAD/2*Scale + Scale*STATIONRAD*Math.sin(2*Math.PI - Math.toRadians(startAngle+endAngle/2)));
             g.drawString(StationName, StringX, StringY);
         }
-        g.setColor(line.getLineColor());
-        g.fillArc(X, Y, radius, radius, startAngle, endAngle);
     }
 
     public void drawLine(Graphics g, MetroStation m){

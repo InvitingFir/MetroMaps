@@ -4,6 +4,7 @@ import com.roman.Metro.Change;
 import com.roman.Metro.Line;
 import com.roman.Metro.MetroStation;
 
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -48,30 +49,46 @@ public class MapRead {
 
     public void put(int pos1, int pos2){
         int []mas = {pos1, pos2};
-        readRoutes(mas);
+        readStations(mas);
     }
 
     public void put(int pos1, int pos2, int pos3){
         int []mas = {pos1, pos2, pos3};
-        readRoutes(mas);
+        readStations(mas);
     }
 
     public void put(int pos1, int pos2, int pos3, int pos4){
         int []mas = {pos1, pos2, pos3, pos4};
-        readRoutes(mas);
+        readStations(mas);
     }
 
     public void put(int pos1, int pos2, int pos3, int pos4, int pos5){
         int []mas = {pos1, pos2, pos3, pos4, pos5};
-        readRoutes(mas);
+        readStations(mas);
     }
 
-    private void readRoutes(int [] mas){
+    public void putLine(int from, int to){
+        int j = 0;
+        int []mas = new int[to-from];
+        for (int i = from; i <= to; i++, j++) { mas[j] = i; }
+        readStations(mas);
+    }
+
+    private void readLines(){
+        MetroStation next = null;
+        MetroStation previous = null;
+
+    }
+
+    private void readStations(int [] mas){
         String scan;
         MetroStation head = null;
         Map<MetroStation, Change> temp = new LinkedHashMap<>();
         for(Map.Entry<MetroStation, Map<MetroStation, Change>> col:Metro.entrySet()) {
-            if(col.getKey().getPosition() == mas[0]){head = col.getKey();}
+            if(col.getKey().getPosition() == mas[0]){
+                head = col.getKey();
+                break;
+            }
         }
         for(int i = 1;i<mas.length;i++){
             for(Map.Entry<MetroStation, Map<MetroStation, Change>> col:Metro.entrySet()){
