@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 
-//служебный класс для легкого заполенения матрицы.
+//служебный класс для легкого заполенения матрицы с файла.
 
 public class MapRead {
     private Table<MetroStation, Change> Metro;
@@ -25,32 +25,25 @@ public class MapRead {
         catch(Exception e){e.printStackTrace();}
     }
 
-    public Table<MetroStation, Change> stationsInit(){
+    public Table<MetroStation, Change> stationsInit() {
         Scanner sc;
         String name;
         int X, Y;
         Line line;
 
-        try{ sc = new Scanner(getClass().getClassLoader().getResourceAsStream(StationsPath));
-            while(sc.hasNextLine()){
+        try {
+            sc = new Scanner(getClass().getClassLoader().getResourceAsStream(StationsPath));
+            while (sc.hasNextLine()) {
                 name = sc.next();
                 X = sc.nextInt();
                 Y = sc.nextInt();
-                line = lineChoice(sc.next());
-                Metro.putColumn(new MetroStation(name, X, Y, line));
+                line = LinesMas[sc.nextInt()];
+                Metro.putColumn(new MetroStation(name, X, Y, line), null);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        catch(Exception e){e.printStackTrace();}
         return Metro;
-    }
-
-    private Line lineChoice(String lineName){
-        for (Line l:LinesMas) {
-            if(lineName.equals(l.getName())){
-                return l;
-            }
-        }
-        return null;
     }
 
     public void put(int pos1, int pos2){
@@ -73,8 +66,6 @@ public class MapRead {
         readRoutes(mas);
     }
 
-
-    //заполнение матрицы для станции со степенью 1
     private void readRoutes(int [] mas){
         String scan;
         MetroStation head = null;
@@ -91,6 +82,6 @@ public class MapRead {
                 }
             }
         }
-        Metro.setColumn(head, temp);
+        Metro.putColumn(head, temp);
     }
 }

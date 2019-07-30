@@ -1,5 +1,7 @@
 package com.roman.Util;
 
+import com.roman.Metro.MetroStation;
+
 import java.util.*;
 
 public class Table <K1, V> {
@@ -7,26 +9,25 @@ public class Table <K1, V> {
 
     public Table(){ Table = new LinkedHashMap<>(); }
 
-    public void putValue(K1 key1, K1 key2, V value){
-        if(key2 == null){
-            Table.put(key1, null);
-            return;
-        }
-        if(!Table.containsKey(key1)){
-            Table.put(key1, new LinkedHashMap<>());
+    public void putColumn(K1 key, Map<K1, V> value){ Table.put(key, value); }
+
+    public void putRow(K1 key1, K1 key2, V value){
+        if(Table.get(key1) == null){
+            Map<K1, V> temp = new LinkedHashMap<>();
+            temp.put(key2, value);
+            Table.put(key1, temp);
         }
         Table.get(key1).put(key2, value);
     }
 
-    public void putColumn(K1 key){ Table.put(key, null); }
-
-    public void putRow(K1 key1, K1 key2){ Table.get(key1).put(key2, null); }
-
-    public void setColumn(K1 key, Map<K1, V> value){ Table.put(key, value); }
-
-    public V get(K1 key1, K1 key2){
+    public V getRow(K1 key1, K1 key2){
         if(Table.get(key1).get(key2) == null) return null;
         else return Table.get(key1).get(key2);
+    }
+
+    public Map<K1, V> getColumn(K1 key){
+        if(Table.get(key) == null) return null;
+        else return Table.get(key);
     }
 
     public Set<Map.Entry<K1, Map<K1, V>>> entrySet(){ return Table.entrySet(); }
@@ -37,5 +38,7 @@ public class Table <K1, V> {
 
     public int size(){ return Table.size(); }
 
-    public Map<K1, V> getValue(K1 key){return Table.get(key);}
+    public void fill(List<K1> list){
+        for (K1 key:list) { Table.put(key, null); }
+    }
 }

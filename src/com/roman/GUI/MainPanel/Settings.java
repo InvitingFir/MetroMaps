@@ -8,36 +8,76 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.Comparator;
+
 
 public class Settings extends JPanel {
     public static final int WIDTH = MainFrame.WIDTH-500;
     private static Settings Singleton;
     private MetroSystem Metro;
-    private JButton ZoomIn;
-    private JButton ZoomOut;
     private Graphics g;
-    private JComboBox MetroBox;
-    private Map<String, MetroSystem> MetroMap;
     private float Scale = 1;
+    private MetroStation start, finish;
+
 
     private Settings(MetroSystem m){
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         Metro = m;
         setBackground(Color.LIGHT_GRAY);
         setPreferredSize(new Dimension(WIDTH, MainFrame.HEIGHT));
         g = Graphics.getInstance();
-        MetroMap = new HashMap<>();
 
-        ZoomIn = new JButton("+");
+        add(ZoomInit());
+        add(PathPanelInit());
+    }
+
+    private JPanel PathPanelInit(){
+        MetroStation[] stations = Metro.getStations();
+        Arrays.sort(stations, new Comparator<>() {
+            @Override
+            public int compare(MetroStation o1, MetroStation o2) {
+                return o1.toString().compareTo(o2.toString());
+            }
+        });
+        JComboBox<MetroStation> StartBox = new JComboBox<>(stations);
+        StartBox.addActionListener(new StartComboListener());
+        StartBox.setEditable(true);
+        start = (MetroStation)StartBox.getSelectedItem();
+
+        JComboBox<MetroStation> FinishBox = new JComboBox<>(stations);
+        FinishBox.addActionListener(new FinishComboListener());
+        FinishBox.setEditable(true);
+        finish = (MetroStation)FinishBox.getSelectedItem();
+
+
+        JButton CalculateButton = new JButton("Расчитать");
+        CalculateButton.addActionListener(new CalculateListener());
+
+        JButton CancelButton = new JButton("x");
+        CancelButton.addActionListener(new CancelListener());
+
+        JPanel PathPanel = new JPanel();
+        PathPanel.setBackground(Color.LIGHT_GRAY);
+        PathPanel.add(new JLabel("Ваш   маршрут:"));
+        PathPanel.add(StartBox);
+        PathPanel.add(CalculateButton);
+        PathPanel.add(FinishBox);
+        PathPanel.add(CancelButton);
+        return PathPanel;
+    }
+
+    private JPanel ZoomInit(){
+        JPanel ZoomPanel = new JPanel();
+        JButton ZoomIn = new JButton("+");
         ZoomIn.addActionListener(new ZoomInListener());
-        ZoomOut = new JButton("-");
+        JButton ZoomOut = new JButton("-");
         ZoomOut.addActionListener(new ZoomOutListener());
-        MetroBox = new JComboBox();
-
-        add(new JLabel("Zoom"));
-        add(ZoomIn);
-        add(ZoomOut);
+        ZoomPanel.setBackground(Color.LIGHT_GRAY);
+        ZoomPanel.add(new JLabel("Zoom"));
+        ZoomPanel.add(ZoomIn);
+        ZoomPanel.add(ZoomOut);
+        return ZoomPanel;
     }
 
     public static Settings getInstance(MetroSystem m){
@@ -46,7 +86,6 @@ public class Settings extends JPanel {
     }
 
     private class ZoomInListener implements ActionListener{
-        @Override
         public void actionPerformed(ActionEvent e) {
             if(Scale!=2){
                 Scale*=2;
@@ -57,13 +96,39 @@ public class Settings extends JPanel {
     }
 
     private class ZoomOutListener implements ActionListener{
-        @Override
         public void actionPerformed(ActionEvent e) {
             if(Scale!=0.5){
                 Scale*=0.5;
                 MetroStation.rescale(Scale);
                 g.repaint();
             }
+        }
+    }
+
+    private class StartComboListener implements ActionListener{
+        public void actionPerformed(ActionEvent e) {
+            JComboBox<MetroStation> combo = (JComboBox<MetroStation>) e.getSource();
+            start = (MetroStation) combo.getSelectedItem();
+        }
+    }
+    private class FinishComboListener implements ActionListener{
+        public void actionPerformed(ActionEvent e) {
+            JComboBox<MetroStation> combo = (JComboBox<MetroStation>) e.getSource();
+            finish = (MetroStation) combo.getSelectedItem();
+        }
+    }
+
+    private class CalculateListener implements ActionListener{
+        public void actionPerformed(ActionEvent e) {
+            Metro.CalculatePath(start, finish);
+            g.repaint();
+        }
+    }
+
+    private class CancelListener implements ActionListener{
+        public void actionPerformed(ActionEvent e) {
+            Metro.pathClear();
+            g.repaint();
         }
     }
 }

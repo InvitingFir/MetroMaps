@@ -6,13 +6,13 @@ import java.awt.*;
 
 
 public class TestSystem extends MetroSystem{
-    private Line Red = new Line("Red", new Color(227, 41, 2));
-    private Line Green = new Line("Green", new Color(19, 172, 11));
-    private Line Blue = new Line("Blue", new Color(14, 4, 204));
-    private Line Purple = new Line("Purple", new Color(196, 6, 143));
-    private Line Orange = new Line("Orange", Color.ORANGE);
-    private Line Brown = new Line("Brown", new Color(101, 67, 33));
-    private Line [] LineMas = {Red, Green, Blue, Purple, Orange, Brown};
+    private Line Red = new Line("Red", new Color(243, 29, 41));
+    private Line Green = new Line("Green", new Color(6, 153, 83));
+    private Line Blue = new Line("Blue", new Color(2, 85, 163));
+    private Line Purple = new Line("Purple", new Color(185, 28, 141));
+    private Line Orange = new Line("Orange", new Color(248, 170, 62));
+    private Line Brown = new Line("Brown", new Color(120, 91, 49));
+    private Line [] LineMas = {Red, Brown, Blue, Purple, Orange,Green};
 
     public TestSystem(){
         super("com/roman/Resource/TestMetro.stat", "com/roman/Resource/TestMetro.con");

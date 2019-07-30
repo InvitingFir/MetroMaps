@@ -33,15 +33,20 @@ public class MetroStation{
     public Color getColor(){return line.getLineColor();}
     public static void rescale(float S){Scale = S;}
 
+    @Override
+    public String toString() { return StationName; }
+
     public void drawStation(Graphics g, MetroStation point, int startAngle, int endAngle){
         int radius = Math.round(STATIONRAD*Scale);
         int X = CENTER_X + Math.round(point.getX()*Scale);
         int Y = CENTER_Y + Math.round(point.getY()*Scale);
-        g.setColor(Color.GRAY);
-        g.setFont(f);
-        int StringX = (int)(X+STATIONRAD/2*Scale + Scale*STATIONRAD*Math.cos(2*Math.PI - Math.toRadians(startAngle+endAngle/2)));
-        int StringY = (int)(Y+STATIONRAD/2*Scale + Scale*STATIONRAD*Math.sin(2*Math.PI - Math.toRadians(startAngle+endAngle/2)));
-        g.drawString(StationName, StringX, StringY);
+        if(!Line.isChosen()){
+            g.setColor(Color.GRAY);
+            g.setFont(f);
+            int StringX = (int)(X+STATIONRAD/2*Scale + Scale*STATIONRAD*Math.cos(2*Math.PI - Math.toRadians(startAngle+endAngle/2)));
+            int StringY = (int)(Y+STATIONRAD/2*Scale + Scale*STATIONRAD*Math.sin(2*Math.PI - Math.toRadians(startAngle+endAngle/2)));
+            g.drawString(StationName, StringX, StringY);
+        }
         g.setColor(line.getLineColor());
         g.fillArc(X, Y, radius, radius, startAngle, endAngle);
     }

@@ -8,12 +8,12 @@ public class PanelManager extends JPanel {
     private static PanelManager Singleton;
     private CardLayout Carder;
 
-    public static final String mainPanelString = "MainPanel";
+    public static final String MAINPANELSTRING = "MainPanel";
 
     private PanelManager(){
         this.setLayout(Carder = new CardLayout());
-        this.add(MainPanel.getInstance(), mainPanelString);
-        Carder.show(this, mainPanelString);
+        this.add(MainPanel.getInstance(), MAINPANELSTRING);
+        Carder.show(this, MAINPANELSTRING);
     }
 
     public static PanelManager getInstance(){
