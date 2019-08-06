@@ -22,9 +22,9 @@ public class Graphics extends JPanel {
 
     private Graphics(MetroSystem m){
         Metro = m;
-        HorizontalScroll = new JScrollBar(JScrollBar.HORIZONTAL, WIDTH/2, 1, -50, WIDTH+50);
+        HorizontalScroll = new JScrollBar(JScrollBar.HORIZONTAL, WIDTH/2, 1, 0, WIDTH);
         HorizontalScroll.addAdjustmentListener(new HorizontalListener());
-        VerticalScroll = new JScrollBar(JScrollBar.VERTICAL, HEIGHT/2, 1, -50, HEIGHT+50);
+        VerticalScroll = new JScrollBar(JScrollBar.VERTICAL, HEIGHT/2, 1, 0, HEIGHT);
         VerticalScroll.addAdjustmentListener(new VerticalListener());
 
         this.setLayout(new BorderLayout());

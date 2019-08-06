@@ -22,7 +22,7 @@ public class MetroStation{
         this.StationName = StationName;
         location = new Location(X, Y);
         this.line = myLine;
-        f = new Font("FreeSet", Font.PLAIN, FontSize);
+        f = new Font("FreeSet", Font.PLAIN, (int)(FontSize/1.3));
     }
 
     public static void setCenterX(int X){CENTER_X = X;}

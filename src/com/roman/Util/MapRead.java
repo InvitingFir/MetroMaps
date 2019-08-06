@@ -4,7 +4,6 @@ import com.roman.Metro.Change;
 import com.roman.Metro.Line;
 import com.roman.Metro.MetroStation;
 
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -31,7 +30,6 @@ public class MapRead {
         String name;
         int X, Y;
         Line line;
-
         try {
             sc = new Scanner(getClass().getClassLoader().getResourceAsStream(StationsPath));
             while (sc.hasNextLine()) {
@@ -41,9 +39,7 @@ public class MapRead {
                 line = LinesMas[sc.nextInt()];
                 Metro.putColumn(new MetroStation(name, X, Y, line), null);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) { e.printStackTrace(); }
         return Metro;
     }
 
@@ -67,38 +63,47 @@ public class MapRead {
         readStations(mas);
     }
 
-    public void putLine(int from, int to){
-        int j = 0;
-        int []mas = new int[to-from];
-        for (int i = from; i <= to; i++, j++) { mas[j] = i; }
-        readStations(mas);
-    }
-
-    private void readLines(){
-        MetroStation next = null;
-        MetroStation previous = null;
-
+    public void putLine(int start, int end){
+        if(end > Metro.size() || end < 0) return;
+        else if(start > Metro.size() || start < 0) return;
+        MetroStation current = null;
+        String nextScan = "0";
+        String pastScan = "0";
+        MetroStation past = null;
+        for (MetroStation m: Metro.keySet()) {
+            if(m.getPosition() >= start){
+                if(current!= null){
+                    nextScan = RouteScan.next();
+                    Metro.putRow(current, m, new Change(Integer.parseInt(nextScan)));
+                }
+                if(past != null){
+                    Metro.putRow(current, past, new Change(Integer.parseInt(pastScan)));
+                }
+                past = current;
+                current = m;
+                pastScan = nextScan;
+                if(m.getPosition() == end) break;
+            }
+        }
+        Metro.putRow(current, past, new Change(Integer.parseInt(pastScan)));
     }
 
     private void readStations(int [] mas){
-        String scan;
-        MetroStation head = null;
-        Map<MetroStation, Change> temp = new LinkedHashMap<>();
-        for(Map.Entry<MetroStation, Map<MetroStation, Change>> col:Metro.entrySet()) {
-            if(col.getKey().getPosition() == mas[0]){
-                head = col.getKey();
-                break;
+       String scan;
+       MetroStation head;
+       MetroStation [] stations = new MetroStation[mas.length];
+       int i = mas.length - 1;
+        for (MetroStation m: Metro.keySet()) {
+            if(m.getPosition() == mas[i]){
+                stations[i] = m;
+                if(i == 0) break;
+                i--;
             }
         }
-        for(int i = 1;i<mas.length;i++){
-            for(Map.Entry<MetroStation, Map<MetroStation, Change>> col:Metro.entrySet()){
-                if(col.getKey().getPosition() == mas[i]){
-                    scan = RouteScan.next();
-                    temp.put(col.getKey(), new Change(Integer.parseInt(scan)));
-                    break;
-                }
-            }
+        for (int j = 1; j < mas.length; j++) {
+            scan = RouteScan.next();
+            Metro.putRow(stations[0], stations[j], new Change(Integer.parseInt(scan)));
+            Metro.putRow(stations[j], stations[0], new Change(Integer.parseInt(scan)));
         }
-        Metro.putColumn(head, temp);
     }
 }

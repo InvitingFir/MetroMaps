@@ -19,6 +19,8 @@ public class Settings extends JPanel {
     private Graphics g;
     private float Scale = 1;
     private MetroStation start, finish;
+    private JLabel PathLength;
+    private String length = "Длина пути: null";
 
 
     private Settings(MetroSystem m){
@@ -26,10 +28,12 @@ public class Settings extends JPanel {
         Metro = m;
         setBackground(Color.LIGHT_GRAY);
         setPreferredSize(new Dimension(WIDTH, MainFrame.HEIGHT));
+        PathLength = new JLabel(length);
         g = Graphics.getInstance();
 
         add(ZoomInit());
         add(PathPanelInit());
+        add(PathLength);
     }
 
     private JPanel PathPanelInit(){
@@ -123,7 +127,11 @@ public class Settings extends JPanel {
 
     private class CalculateListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {
-            if(!start.equals(finish)) Metro.CalculatePath(start, finish);
+            if(!start.equals(finish)) {
+                int temp = Metro.CalculatePath(start, finish);
+                length = String.format("Длина пути: %d", temp);
+                PathLength.setText(length);
+            }
             g.repaint();
         }
     }

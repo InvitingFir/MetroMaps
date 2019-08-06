@@ -21,6 +21,7 @@ public abstract class MetroSystem {
         RoutesPath = path2;
     }
 
+    public MetroStation[] getStations(){ return Routes.keySet().toArray(new MetroStation[0]); }
 
     protected Table<MetroStation, Change> readStationFile(Line [] Lines){
         Reader = new MapRead(StationsPath, RoutesPath,  Lines);
@@ -61,7 +62,7 @@ public abstract class MetroSystem {
                     break;
                 }
             }
-            if(Draw){stationIconDraw(column.getValue(), column.getKey(), g);}
+            if(Draw) stationIconDraw(column.getValue(), column.getKey(), g);
         }
     }
 
@@ -87,7 +88,6 @@ public abstract class MetroSystem {
     private void routeDraw(Graphics g, Table<MetroStation, Change> Metro) {
         int LastPosition = -1;
         for (Map.Entry<MetroStation, Map<MetroStation, Change>> column : Metro.entrySet()) {
-            if(column.getValue().containsKey(null)) continue;
             for (MetroStation line : column.getValue().keySet()) {
                 if(line.getLocation().equals(column.getKey().getLocation())) continue;
                 if (line.getPosition() > LastPosition) column.getKey().drawLine(g, line);
@@ -97,9 +97,7 @@ public abstract class MetroSystem {
         }
     }
 
-    public MetroStation[] getStations(){ return Routes.keySet().toArray(new MetroStation[0]); }
-
-    public void CalculatePath(MetroStation start, MetroStation finish){
+    public int CalculatePath(MetroStation start, MetroStation finish){
         int inf = Integer.MAX_VALUE;
         int n = Routes.size();
         boolean [] checked = new boolean[n];
@@ -125,8 +123,8 @@ public abstract class MetroSystem {
                 }
             }
         }
-        System.out.println(length.get(finish));
         pathReconstruction(start, finish, predators);
+        return length.get(finish);
     }
 
     private void pathReconstruction(MetroStation start, MetroStation finish, Map<MetroStation, MetroStation> path) {
@@ -140,11 +138,9 @@ public abstract class MetroSystem {
         while (path.get(temp1) != start) {
             temp1 = path.get(temp1);
             for (MetroStation m:list) {
-                if(i<list.size()-1){
-                    if(m.getPosition()<temp1.getPosition()){
-                        i++;
-                        continue;
-                    }
+                if(i<list.size()-1 && m.getPosition()<temp1.getPosition()){
+                    i++;
+                    continue;
                 }
                 list.add(i, temp1);
                 i = 0;
