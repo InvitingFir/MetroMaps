@@ -18,8 +18,6 @@ public class Graphics extends JPanel {
     private static Graphics Singleton;
     private MetroSystem Metro;
 
-    private Graphics(){}
-
     private Graphics(MetroSystem m){
         Metro = m;
         HorizontalScroll = new JScrollBar(JScrollBar.HORIZONTAL, WIDTH/2, 1, 0, WIDTH);
@@ -32,16 +30,15 @@ public class Graphics extends JPanel {
         this.add(VerticalScroll, BorderLayout.EAST);
     }
 
-
     public static Graphics getInstance(MetroSystem m){
         if(Singleton ==  null) Singleton = new Graphics(m);
         return Singleton;
     }
 
-    public static Graphics getInstance(){
-        if(Singleton ==  null) Singleton = new Graphics();
-        return Singleton;
-    }
+    public static Graphics getInstance(){ return Singleton; }
+
+    //Метод для смены на другую карту метро. Вызывается из MainPanel
+    public void setMetro(MetroSystem m){ Metro = m;}
 
     @Override
     public void paintComponent(java.awt.Graphics g) {

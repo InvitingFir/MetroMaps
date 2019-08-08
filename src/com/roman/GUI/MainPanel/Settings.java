@@ -20,7 +20,10 @@ public class Settings extends JPanel {
     private float Scale = 1;
     private MetroStation start, finish;
     private JLabel PathLength;
+    private JComboBox<MetroStation> StartBox;
+    private JComboBox<MetroStation> FinishBox;
     private String length = "Длина пути: null";
+    private JButton SettingsButton;
 
 
     private Settings(MetroSystem m){
@@ -30,13 +33,39 @@ public class Settings extends JPanel {
         setPreferredSize(new Dimension(WIDTH, MainFrame.HEIGHT));
         PathLength = new JLabel(length);
         g = Graphics.getInstance();
+        SettingsButton = new JButton("Настройки");
+        SettingsButton.addActionListener(new SettingsButtonListener());
 
+        StartBox = new JComboBox<>();
+        StartBox.setPreferredSize(new Dimension(WIDTH-40, 20));
+        StartBox.addActionListener(new StartComboListener());
+        StartBox.setEditable(false);
+
+        FinishBox = new JComboBox<>();
+        FinishBox.setPreferredSize(new Dimension(WIDTH-40, 20));
+        FinishBox.addActionListener(new FinishComboListener());
+        FinishBox.setEditable(false);
+
+        add(SettingsButton);
         add(ZoomInit());
         add(PathPanelInit());
         add(PathLength);
     }
 
-    private JPanel PathPanelInit(){
+
+    public static Settings getInstance(MetroSystem m){
+        if(Singleton ==  null) Singleton = new Settings(m);
+        return Singleton;
+    }
+
+    //Метод для смены на другую карту метро. Вызывается из MainPanel
+    public void setMetro(MetroSystem m){
+        Metro = m;
+        setComboBoxes();
+    }
+
+    //Меняет списки со станциями при смене карты метро
+    private void setComboBoxes(){
         MetroStation[] stations = Metro.getStations();
         Arrays.sort(stations, new Comparator<>() {
             @Override
@@ -44,19 +73,19 @@ public class Settings extends JPanel {
                 return o1.toString().compareTo(o2.toString());
             }
         });
-        JComboBox<MetroStation> StartBox = new JComboBox<>(stations);
-        StartBox.setPreferredSize(new Dimension(WIDTH-40, 20));
-        StartBox.addActionListener(new StartComboListener());
-        StartBox.setEditable(true);
+        StartBox.setModel(new DefaultComboBoxModel<>(stations));
         start = (MetroStation)StartBox.getSelectedItem();
 
-        JComboBox<MetroStation> FinishBox = new JComboBox<>(stations);
-        FinishBox.setPreferredSize(new Dimension(WIDTH-40, 20));
-        FinishBox.addActionListener(new FinishComboListener());
-        FinishBox.setEditable(true);
+        FinishBox.setModel(new DefaultComboBoxModel<>(stations));
         finish = (MetroStation)FinishBox.getSelectedItem();
 
+        revalidate();
+        repaint();
+    }
 
+    //Инициализация панели с маршрутом
+    private JPanel PathPanelInit(){
+        setComboBoxes();
         JButton CalculateButton = new JButton("Расчитать");
         CalculateButton.addActionListener(new CalculateListener());
 
@@ -81,15 +110,19 @@ public class Settings extends JPanel {
         JButton ZoomOut = new JButton("-");
         ZoomOut.addActionListener(new ZoomOutListener());
         ZoomPanel.setBackground(Color.LIGHT_GRAY);
-        ZoomPanel.add(new JLabel("Zoom"));
+        ZoomPanel.add(new JLabel("Масштаб: "));
         ZoomPanel.add(ZoomIn);
         ZoomPanel.add(ZoomOut);
         return ZoomPanel;
     }
 
-    public static Settings getInstance(MetroSystem m){
-        if(Singleton ==  null) Singleton = new Settings(m);
-        return Singleton;
+    private class SettingsButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            PathLength.setText("Длина пути: null");
+            MainPanel mp = MainPanel.getInstance();
+            mp.setPanel();
+        }
     }
 
     private class ZoomInListener implements ActionListener{
@@ -131,14 +164,15 @@ public class Settings extends JPanel {
                 int temp = Metro.CalculatePath(start, finish);
                 length = String.format("Длина пути: %d", temp);
                 PathLength.setText(length);
+                g.repaint();
             }
-            g.repaint();
         }
     }
 
     private class CancelListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {
             Metro.pathClear();
+            PathLength.setText("Длина пути: null");
             g.repaint();
         }
     }

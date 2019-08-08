@@ -25,6 +25,7 @@ public class MetroStation{
         f = new Font("FreeSet", Font.PLAIN, (int)(FontSize/1.3));
     }
 
+    public static void nullPosition(){Position = 0;}
     public static void setCenterX(int X){CENTER_X = X;}
     public static void setCenterY(int Y){CENTER_Y = Y;}
     private int getX(){return location.getX();}

@@ -15,10 +15,20 @@ public abstract class MetroSystem {
     protected MapRead Reader;
     private String StationsPath, RoutesPath;
     private Table<MetroStation, Change> Path;
+    private String MetroName;
 
-    public MetroSystem(String path1, String path2){
+
+
+    public MetroSystem(String path1, String path2, String name){
         StationsPath = path1;
         RoutesPath = path2;
+        MetroName = name;
+        MetroStation.nullPosition();
+    }
+
+    @Override
+    public String toString() {
+        return MetroName;
     }
 
     public MetroStation[] getStations(){ return Routes.keySet().toArray(new MetroStation[0]); }

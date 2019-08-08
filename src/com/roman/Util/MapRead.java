@@ -5,7 +5,7 @@ import com.roman.Metro.Line;
 import com.roman.Metro.MetroStation;
 
 import java.util.LinkedHashMap;
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 
@@ -31,7 +31,7 @@ public class MapRead {
         int X, Y;
         Line line;
         try {
-            sc = new Scanner(getClass().getClassLoader().getResourceAsStream(StationsPath));
+            sc = new Scanner(getClass().getClassLoader().getResourceAsStream(StationsPath), StandardCharsets.UTF_8);
             while (sc.hasNextLine()) {
                 name = sc.next();
                 X = sc.nextInt();
