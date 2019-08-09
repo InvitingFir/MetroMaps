@@ -27,7 +27,7 @@ public class Settings extends JPanel {
 
 
     private Settings(MetroSystem m){
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         Metro = m;
         setBackground(Color.LIGHT_GRAY);
         setPreferredSize(new Dimension(WIDTH, MainFrame.HEIGHT));
@@ -46,10 +46,9 @@ public class Settings extends JPanel {
         FinishBox.addActionListener(new FinishComboListener());
         FinishBox.setEditable(false);
 
-        add(SettingsButton);
         add(ZoomInit());
         add(PathPanelInit());
-        add(PathLength);
+        add(PathPanel.getInstance());
     }
 
 
@@ -88,11 +87,10 @@ public class Settings extends JPanel {
         setComboBoxes();
         JButton CalculateButton = new JButton("Расчитать");
         CalculateButton.addActionListener(new CalculateListener());
-
         JButton CancelButton = new JButton("x");
         CancelButton.addActionListener(new CancelListener());
-
         JPanel PathPanel = new JPanel();
+        PathPanel.setPreferredSize(new Dimension(Settings.WIDTH, MainFrame.HEIGHT/5));
         PathPanel.setBackground(Color.LIGHT_GRAY);
         PathPanel.add(new JLabel("Из:"));
         PathPanel.add(StartBox);
@@ -105,11 +103,13 @@ public class Settings extends JPanel {
 
     private JPanel ZoomInit(){
         JPanel ZoomPanel = new JPanel();
+        ZoomPanel.setPreferredSize(new Dimension(Settings.WIDTH, MainFrame.HEIGHT/6));
         JButton ZoomIn = new JButton("+");
         ZoomIn.addActionListener(new ZoomInListener());
         JButton ZoomOut = new JButton("-");
         ZoomOut.addActionListener(new ZoomOutListener());
         ZoomPanel.setBackground(Color.LIGHT_GRAY);
+        ZoomPanel.add(SettingsButton);
         ZoomPanel.add(new JLabel("Масштаб: "));
         ZoomPanel.add(ZoomIn);
         ZoomPanel.add(ZoomOut);
@@ -162,8 +162,7 @@ public class Settings extends JPanel {
         public void actionPerformed(ActionEvent e) {
             if(!start.equals(finish)) {
                 int temp = Metro.CalculatePath(start, finish);
-                length = String.format("Длина пути: %d", temp);
-                PathLength.setText(length);
+                PathPanel.getInstance().setPath(Metro.getPath(), start, finish, temp);
                 g.repaint();
             }
         }
@@ -172,6 +171,7 @@ public class Settings extends JPanel {
     private class CancelListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {
             Metro.pathClear();
+            PathPanel.getInstance().setPath(null, null, null, 0);
             PathLength.setText("Длина пути: null");
             g.repaint();
         }

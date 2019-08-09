@@ -17,8 +17,6 @@ public abstract class MetroSystem {
     private Table<MetroStation, Change> Path;
     private String MetroName;
 
-
-
     public MetroSystem(String path1, String path2, String name){
         StationsPath = path1;
         RoutesPath = path2;
@@ -39,6 +37,8 @@ public abstract class MetroSystem {
     }
 
     public void pathClear(){ Path = null;}
+
+    public Table<MetroStation, Change> getPath(){return Path;}
 
     //отрисовка карты метро целиком
     //сначала вершины, потом маршруты
