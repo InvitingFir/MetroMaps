@@ -61,6 +61,7 @@ public class Settings extends JPanel {
     public void setMetro(MetroSystem m){
         Metro = m;
         setComboBoxes();
+        PathPanel.getInstance().setPath(null, null, null, 0);
     }
 
     //Меняет списки со станциями при смене карты метро

@@ -1,5 +1,6 @@
 package com.roman.GUI.MainPanel;
 
+import com.roman.GUI.AppSettings;
 import com.roman.GUI.PanelManager;
 import com.roman.Metro.Metrosystems.MetroSystem;
 import com.roman.Metro.Metrosystems.SaintPetersburg;
@@ -10,14 +11,14 @@ import java.awt.*;
 
 public class MainPanel extends JPanel {
     private static MainPanel Singleton;
-    private MetroSystem [] Metro = {new SaintPetersburg(), new TestSystem()};
-    private MetroSystem CurrentMetro = Metro[0];
+    private MetroSystem CurrentMetro;
     private PanelManager panelManager;
     private Graphics graphics;
     private Settings settings;
 
     private MainPanel(PanelManager manager){
         panelManager = manager;
+        CurrentMetro = AppSettings.getInstance().getCurrentMetro();
         graphics = Graphics.getInstance(CurrentMetro);
         settings = Settings.getInstance(CurrentMetro);
         this.setLayout(new BorderLayout());
@@ -32,15 +33,13 @@ public class MainPanel extends JPanel {
 
     public static MainPanel getInstance(){return Singleton;}
 
-    //получить массив ссылок на загруженные карты метро
-    public MetroSystem [] getMetroSystems(){ return Metro; }
-
     //сменить карту метро
     public void setMetro(MetroSystem m){
         if(!CurrentMetro.equals(m)){
             CurrentMetro = m;
             settings.setMetro(CurrentMetro);
             graphics.setMetro(CurrentMetro);
+            CurrentMetro.pathClear();
         }
     }
 

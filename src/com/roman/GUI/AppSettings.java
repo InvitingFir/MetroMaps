@@ -2,6 +2,8 @@ package com.roman.GUI;
 
 import com.roman.GUI.MainPanel.MainPanel;
 import com.roman.Metro.Metrosystems.MetroSystem;
+import com.roman.Metro.Metrosystems.SaintPetersburg;
+import com.roman.Metro.Metrosystems.TestSystem;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -10,8 +12,8 @@ import java.awt.event.ActionListener;
 public class AppSettings extends JPanel {
     private static AppSettings Singleton;
     private PanelManager panelManager;
-    private MainPanel mainPanel;
-    private MetroSystem [] MetroSystems;
+    private MetroSystem [] MetroSystems = {new SaintPetersburg(), new TestSystem()};
+    ;
     private JComboBox<MetroSystem> MetroSysytemsBox;
     private MetroSystem CurrentSystem;
     private JButton Credits;
@@ -20,8 +22,6 @@ public class AppSettings extends JPanel {
 
     private AppSettings(PanelManager manager){
         panelManager = manager;
-        mainPanel = MainPanel.getInstance();
-        MetroSystems = mainPanel.getMetroSystems();
         MetroSysytemsBox = new JComboBox<>(MetroSystems);
         MetroSysytemsBox.addActionListener(new BoxListener());
         CurrentSystem = (MetroSystem) MetroSysytemsBox.getSelectedItem();
@@ -42,6 +42,10 @@ public class AppSettings extends JPanel {
         return Singleton;
     }
 
+    public static AppSettings getInstance(){return Singleton;}
+
+    public MetroSystem getCurrentMetro(){return CurrentSystem;}
+
     private class BoxListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             JComboBox<MetroSystem> combo = (JComboBox<MetroSystem>) e.getSource();
@@ -50,7 +54,10 @@ public class AppSettings extends JPanel {
     }
 
     private class SaveButtonListener implements ActionListener{
-        public void actionPerformed(ActionEvent e) { mainPanel.setMetro(CurrentSystem); }
+        public void actionPerformed(ActionEvent e) {
+            CurrentSystem = (MetroSystem) MetroSysytemsBox.getSelectedItem();
+            MainPanel.getInstance().setMetro(CurrentSystem);
+        }
     }
 
     private class ExitButtonListener implements ActionListener{

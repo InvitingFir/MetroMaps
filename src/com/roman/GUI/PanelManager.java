@@ -13,8 +13,8 @@ public class PanelManager extends JPanel {
 
     private PanelManager(){
         this.setLayout(Carder = new CardLayout());
-        this.add(MainPanel.getInstance(this), MAINPANELSTRING);
         this.add(AppSettings.getInstance(this), APPSETTINGSSTRING);
+        this.add(MainPanel.getInstance(this), MAINPANELSTRING);
         Carder.show(this, MAINPANELSTRING);
     }
 
