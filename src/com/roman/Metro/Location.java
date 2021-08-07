@@ -3,17 +3,21 @@ package com.roman.Metro;
 import java.util.Objects;
 
 public class Location {
-    private int X;
-    private int Y;
+    private int x;
+    private int y;
 
-    public Location(int X, int Y){
-        this.X = X;
-        this.Y = Y;
+    public Location(int X, int Y) {
+        this.x = X;
+        this.y = Y;
     }
 
-    public int getX(){return X;}
+    public int getX() {
+        return x;
+    }
 
-    public int getY(){return Y;}
+    public int getY() {
+        return y;
+    }
 
     @Override
     public boolean equals(Object o) {

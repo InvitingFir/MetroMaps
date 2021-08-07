@@ -15,32 +15,32 @@ public class TestSystem extends MetroSystem{
     private Line [] LineMas = {Red, Brown, Blue, Purple, Orange,Green};
 
     public TestSystem(){
-        super("com/roman/Resource/TestMetro.stat", "com/roman/Resource/TestMetro.con", "Тестовое метро");
-        Routes = readStationFile(LineMas);
+        super("com/roman/resource/TestMetro.stat", "com/roman/resource/TestMetro.con", "Тестовое метро");
+        routesTable = readStationFile(LineMas);
         connections();
     }
 
-    private void connections(){
+    private void connections() {
         //Кольцевая
-        Reader.put(25, 24, 20);
-        Reader.putLine(20, 24);
-        Reader.put(20, 8);
-        Reader.put(21, 11);
-        Reader.put(22, 4);
-        Reader.put(23, 17);
-        Reader.put(24, 13);
-        Reader.put(25, 2);
+        reader.put(25, 24, 20);
+        reader.putLine(20, 24);
+        reader.put(20, 8);
+        reader.put(21, 11);
+        reader.put(22, 4);
+        reader.put(23, 17);
+        reader.put(24, 13);
+        reader.put(25, 2);
         //Оранжевая
-        Reader.putLine(16, 19);
-        Reader.put(16, 12, 3);
+        reader.putLine(16, 19);
+        reader.put(16, 12, 3);
         //Синяя
-        Reader.putLine(13, 15);
+        reader.putLine(13, 15);
         //Красная
-        Reader.putLine(9, 12);
-        Reader.put(12, 3);
+        reader.putLine(9, 12);
+        reader.put(12, 3);
         //Зеленая
-        Reader.putLine(6, 8);
+        reader.putLine(6, 8);
         //Фиолетовая
-        Reader.putLine(0, 5);
+        reader.putLine(0, 5);
     }
 }

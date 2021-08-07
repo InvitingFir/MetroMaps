@@ -1,9 +1,13 @@
 package com.roman.Metro;
 
 public class Change {
-    private int Time;
+    private int time;
 
-    public Change(int Time){this.Time = Time;}
+    public Change(int Time) {
+        this.time = Time;
+    }
 
-    public int getTime(){return Time;}
+    public int getTime() {
+        return time;
+    }
 }

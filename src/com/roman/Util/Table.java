@@ -1,6 +1,4 @@
-package com.roman.Util;
-
-import com.roman.Metro.MetroStation;
+package com.roman.util;
 
 import java.util.*;
 
@@ -41,5 +39,4 @@ public class Table <K1, V> {
     public void fill(List<K1> list){
         for (K1 key:list) { Table.put(key, null); }
     }
-
 }

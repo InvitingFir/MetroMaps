@@ -1,31 +1,34 @@
 package com.roman.GUI;
 
 import com.roman.GUI.MainPanel.MainPanel;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class PanelManager extends JPanel {
+
+    public static final String MAIN_PANEL_STRING = "MainPanel";
+    public static final String APP_SETTINGS_STRING = "AppSettings";
+
     private static PanelManager Singleton;
-    private static CardLayout Carder;
+    private static CardLayout carder;
 
-    public static final String MAINPANELSTRING = "MainPanel";
-    public static final String APPSETTINGSSTRING = "AppSettings";
-
-    private PanelManager(){
-        this.setLayout(Carder = new CardLayout());
-        this.add(AppSettings.getInstance(this), APPSETTINGSSTRING);
-        this.add(MainPanel.getInstance(this), MAINPANELSTRING);
-        Carder.show(this, MAINPANELSTRING);
+    private PanelManager() {
+        this.setLayout(carder = new CardLayout());
+        this.add(AppSettings.getInstance(this), APP_SETTINGS_STRING);
+        this.add(MainPanel.getInstance(this), MAIN_PANEL_STRING);
+        carder.show(this, MAIN_PANEL_STRING);
     }
 
-    public static PanelManager getInstance(){
-        if(Singleton == null) Singleton = new PanelManager();
+    public static PanelManager getInstance() {
+        if (Singleton == null) {
+            Singleton = new PanelManager();
+        }
         return Singleton;
     }
 
-    //Сменить панель
-    public void setPanel(String s){
-        Carder.show(this, s);
+    public void setPanel(String panelName) {
+        carder.show(this, panelName);
         revalidate();
         repaint();
     }

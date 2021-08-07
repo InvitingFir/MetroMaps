@@ -15,26 +15,27 @@ public class SaintPetersburg extends MetroSystem {
 
     public SaintPetersburg() {
         super("com/roman/Resource/SaintPetersburg.stat", "com/roman/Resource/SaintPetersburg.con", "Метро Санкт-Петербурга");
-        Routes = readStationFile(Lines);
+        routesTable = readStationFile(Lines);
         connections();
     }
-    private void connections(){
+
+    private void connections() {
         //Рыжая ветка
-        Reader.putLine(61, 68);
-        Reader.put(64, 6);
-        Reader.put(62, 52);
-        Reader.put(61, 33, 18);
+        reader.putLine(61, 68);
+        reader.put(64, 6);
+        reader.put(62, 52);
+        reader.put(61, 33, 18);
         //Красная ветка
-        Reader.putLine(42, 60);
-        Reader.put(54, 34);
-        Reader.put(53, 19);
-        Reader.put(51, 5);
+        reader.putLine(42, 60);
+        reader.put(54, 34);
+        reader.put(53, 19);
+        reader.put(51, 5);
         //Синяя ветка
-        Reader.putLine(24, 41);
-        Reader.put(33, 18);
-        Reader.put(32, 4);
+        reader.putLine(24, 41);
+        reader.put(33, 18);
+        reader.put(32, 4);
         //Фиолетовая ветка
-        Reader.putLine(12, 23);
-        Reader.putLine(0, 11);
+        reader.putLine(12, 23);
+        reader.putLine(0, 11);
     }
 }

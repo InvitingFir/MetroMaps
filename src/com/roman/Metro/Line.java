@@ -4,21 +4,31 @@ import java.awt.*;
 
 public class Line {
     private Color lineColor;
-    private String Name;
-    private static boolean Chosen;
+    private String name;
+    private static boolean chosen;
 
-    public Line(String name, Color LineColor){
-        this.Name = name;
+    public Line(String name, Color LineColor) {
+        this.name = name;
         this.lineColor = LineColor;
     }
 
     public Color getLineColor() {
-        if(Chosen) return lineColor.darker().darker();
-        else return lineColor;
+        if (chosen) {
+            return lineColor.darker().darker();
+        } else {
+            return lineColor;
+        }
     }
-    public String getName(){return Name;}
 
-    public static void setChosen(boolean chosen) { Chosen = chosen; }
+    public String getName() {
+        return name;
+    }
 
-    public static boolean isChosen() { return Chosen; }
+    public static void setChosen(boolean chosen) {
+        Line.chosen = chosen;
+    }
+
+    public static boolean isChosen() {
+        return chosen;
+    }
 }

@@ -1,10 +1,9 @@
-package com.roman.Util;
+package com.roman.util;
 
 import com.roman.Metro.Change;
 import com.roman.Metro.Line;
 import com.roman.Metro.MetroStation;
 
-import java.util.LinkedHashMap;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
@@ -20,7 +19,7 @@ public class MapRead {
     public MapRead(String Stationspath, String RoutesPath, Line [] Lines){
         LinesMas = Lines;
         this.StationsPath = Stationspath;
-        Metro = new Table<>();
+        Metro = new Table<MetroStation, Change>();
         try{RouteScan = new Scanner(getClass().getClassLoader().getResourceAsStream(RoutesPath));}
         catch(Exception e){e.printStackTrace();}
     }
